@@ -9,8 +9,8 @@ function getTotalAccountsCount(accounts) {
 }
 
 function getBooksBorrowedCount(books) {
-  const borrowedList = books.filter((book) => book.borrows[0].returned === false);
-  return borrowedList.length;
+  const borrowedBooks = books.filter((book) => book.borrows[0].returned === false);
+  return borrowedBooks.length;
 }
 
 function getMostCommonGenres(books) {
@@ -46,11 +46,11 @@ function getMostCommonGenres(books) {
 
 for (let book of books) {
   const popularity = book.borrows.length
-  const greatBooks = popBooks.find(
+  const bestBooks = popBooks.find(
     (popularBook) => popularBook.name === book
   );
-  if (greatBooks) {
-    greatBooks.count++;
+  if (bestBooks) {
+    bestBooks.count++;
   } else {
     popBooks.push({ name: book.title, count: popularity});
   }
