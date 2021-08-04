@@ -1,46 +1,39 @@
+//Returns an array of authors with the given ID
 function findAuthorById(authors, id) {
-  const result = authors.find((author) => id === author.id)
-  return result;
+  //Uses find.
+  return authors.find((author) => author.id === id );
 }
 
-
+//Returns an array of the books with the given ID
 function findBookById(books, id) {
-  const result = books.find((book)=> id === book.id);
-  return result;
-};
+  //Uses find
+  return books.find((book) => book.id.includes(id));
+}
 
-
+//Returns an array of two arrays: 
+//- An array of the available books.
+//- An array of the books currently borrowed.
 function partitionBooksByBorrowedStatus(books) {
-  let available = [];
-  let unavailable = [];
-  const bookStatuses = [];
-  books.forEach((book) => {
-    const isBookReturned = book.borrows[0].returned;
-  
-  if (isBookReturned) { // if book is not returned
-    unavailable.push(book);
-  } else { // if book is returned
-    available.push(book);
-  }
-  });
-  bookStatuses.push(available);
-  bookStatuses.push(unavailable);
-  return bookStatuses;
-  }
+  //Uses filter
+  const availableList = books.filter((book) => book.borrows[0].returned === true);
+  const borrowedList = books.filter((book) => book.borrows[0].returned === false);
+  return [borrowedList, availableList];
+}
 
-  function getBorrowersForBook(book, accounts) {
-    let result = [];
-    let borrowArray = book.borrows;  
-    borrowArray.forEach(borrow=>{
-      let account = accounts.find(acc => acc.id === borrow.id);
-      let obj = account;
-      obj['returned'] =  borrow.returned;
-      result.push(obj);
-    })
-    console.log(result);
-    return result.slice(0,10);
+//Returns an array of all of the transactions within a books borrows array.
+function getBorrowersForBook(book, accounts) {
+  const result = [];
+  //Uses for of loop.
+  for (let account of accounts) {
+    for (let i = 0; i < book.borrows.length; i++) {
+      if(account.id === book.borrows[i].id) {
+        const returned = book.borrows[i].returned
+        result.push({...account, returned })
+      }
+    }
   }
-  
+  return result.slice(0,10);
+}
 
 module.exports = {
   findAuthorById,
